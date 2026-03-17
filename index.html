@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>LIFE Runner V17</title>
+
+<style>
+
+body{
+font-family:Arial,sans-serif;
+padding:20px;
+background:#f5f6f8;
+color:#333;
+}
+
+h1,h2,h3{
+text-align:center;
+}
+
+input,select{
+width:100%;
+margin-bottom:10px;
+padding:6px;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
+button{
+padding:10px;
+margin-top:10px;
+width:100%;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.card{
+background:white;
+padding:15px;
+margin-bottom:15px;
+border-radius:12px;
+box-shadow:0 2px 6px rgba(0,0,0,0.08);
+}
+
+#result,
+#tableContainer,
+#commentSection{
+margin-top:10px;
+padding:10px;
+border-radius:10px;
+background:#eef2ff;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:10px;
+}
+
+th,td{
+border:1px solid #ccc;
+padding:6px;
+text-align:right;
+}
+
+th{
+background:#dce6f2;
+}
+
+.clickable{
+cursor:pointer;
+color:#1a2f60;
+text-decoration:underline;
+}
+
+.detailRow{
+display:none;
+background:#f0f4ff;
+}
+
+canvas{
+background:#fff;
+border-radius:12px;
+margin-top:20px;
+}
+
+#philosophySection{
+display:none;
+margin-top:20px;
+padding:15px;
+border-top:1px solid #ccc;
+background:#fff8e1;
+font-family:"Yu Mincho","serif";
+font-size:16px;
+line-height:1.6;
+border-radius:12px;
+}
+
+#philoBtn{
+padding:12px 20px;
+background:linear-gradient(to bottom,#1c2f4a,#12203a);
+color:#f5e6a6;
+font-weight:bold;
+font-family:"Yu Mincho","serif";
+font-size:16px;
+border-radius:12px;
+border:2px solid #bfa84c;
+box-shadow:0 4px 6px rgba(0,0,0,0.3);
+cursor:pointer;
+}
+
+</style>
+
+</head>
+<body>
+
+<h1>LIFE Runner V17</h1>
+
+<div class="card">
+
+<h3>基本情報</h3>
+
+現在年齢
+<input type="number" id="startAge" value="35">
+
+住宅ローン開始年齢
+<input type="number" id="loanStartAge" value="30">
+
+月収（万円）
+<input type="number" id="income" value="50">
+
+ボーナス回数
+<input type="number" id="bonusTimes" value="2">
+
+ボーナス額（万円）
+<input type="number" id="bonusAmount" value="50">
+
+貯蓄（万円）
+<input type="number" id="savings" value="100">
+
+生活費（万円）
+<input type="number" id="expenses" value="30">
+
+投資（月）（万円）
+<input type="number" id="investment" value="5">
+
+投資利回り(%)
+<input type="number" id="investmentReturn" value="5">
+
+防衛資金（万円）
+<input type="number" id="emergencyTarget" value="180">
+
+</div>
+
+
+<div class="card">
+
+<h3>住宅ローン</h3>
+
+借入額（万円）
+<input type="number" id="loanAmount" value="3200">
+
+金利(%)
+<input type="number" id="interestRate" value="0.95">
+
+計算方式
+<select id="repaymentType">
+<option value="equal">元利均等</option>
+<option value="principal">元金均等</option>
+</select>
+
+再計算方法
+<select id="recalcOption">
+<option value="no">そのまま</option>
+<option value="reduce">月額減額</option>
+</select>
+
+</div>
+
+
+<div class="card">
+
+<h3>金利変動</h3>
+
+<div id="rateChangesContainer"></div>
+
+<button onclick="addRateChange()">＋金利追加</button>
+
+</div>
+
+
+<div class="card">
+
+<h3>繰上げ返済</h3>
+
+<div id="prepayListContainer"></div>
+
+<button onclick="addPrepay()">＋繰上げ追加</button>
+
+</div>
+
+
+<button id="runBtn">診断する</button>
+
+<h2>診断結果</h2>
+
+<div id="result"></div>
+
+<div id="tableContainer"></div>
+
+<div id="commentSection"></div>
+
+
+<button id="next5Btn">次の5年</button>
+
+
+<button id="philoBtn">心構え</button>
+
+<div id="philosophySection">
+
+揺れたら立ち止まればいい。<br>
+弱ったらここに帰ってこい。<br>
+整えたらまた進めばいい。<br>
+LIFE Runnerは人生の相棒だ。
+
+</div>
+
+
+<canvas id="assetChart" width="800" height="400"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const runBtn=document.getElementById("runBtn")
+const tableContainer=document.getElementById("tableContainer")
+const commentSection=document.getElementById("commentSection")
+const result=document.getElementById("result")
+
+const next5Btn=document.getElementById("next5Btn")
+
+const philoBtn=document.getElementById("philoBtn")
+const philosophySection=document.getElementById("philosophySection")
+
+const ctx=document.getElementById("assetChart").getContext("2d")
+
+let assetChart=null
+
+let maxYearDisplay=10
+
+
+
+philoBtn.addEventListener("click",()=>{
+
+if(philosophySection.style.display==="none"){
+philosophySection.style.display="block"
+}else{
+philosophySection.style.display="none"
+}
+
+})
+
+
+
+runBtn.addEventListener("click",()=>{
+
+maxYearDisplay=10
+calculateAndRender()
+
+})
+
+
+
+next5Btn.addEventListener("click",()=>{
+
+maxYearDisplay+=5
+calculateAndRender()
+
+})
+function addRateChange(){
+
+let container=document.getElementById("rateChangesContainer")
+
+let div=document.createElement("div")
+div.className="rateChangeRow"
+
+div.innerHTML=
+`
+何年目から
+<input type="number" class="rateYear" value="5">
+
+金利(%)
+<input type="number" class="rateValue" value="1.2" step="0.01">
+
+<button onclick="this.parentElement.remove()">削除</button>
+`
+
+container.appendChild(div)
+
+}
+
+
+
+function addPrepay(){
+
+let container=document.getElementById("prepayListContainer")
+
+let div=document.createElement("div")
+div.className="prepayRow"
+
+div.innerHTML=
+`
+何年目
+<input type="number" class="prepayYear" value="5">
+
+金額(万円)
+<input type="number" class="prepayAmount" value="100">
+
+<button onclick="this.parentElement.remove()">削除</button>
+`
+
+container.appendChild(div)
+
+}
+
+
+
+function toggleDetail(id){
+
+let row=document.getElementById(id)
+
+if(row.style.display==="none"){
+row.style.display="table-row"
+}else{
+row.style.display="none"
+}
+
+}
+
+
+
+function calculateMonthly(loan,rate,months,type){
+
+if(rate===0)return loan/months
+
+if(type==="equal"){
+
+return loan*rate/(1-Math.pow(1+rate,-months))
+
+}else{
+
+return loan/months+loan*rate
+
+}
+
+}
+
+
+
+function calculateAndRender(){
+
+let startAge=Number(document.getElementById("startAge").value)
+
+let loanStartAge=Number(document.getElementById("loanStartAge").value)
+
+let income=Number(document.getElementById("income").value)
+
+let bonusTimes=Number(document.getElementById("bonusTimes").value)
+
+let bonusAmount=Number(document.getElementById("bonusAmount").value)
+
+let savings=Number(document.getElementById("savings").value)
+
+let expenses=Number(document.getElementById("expenses").value)
+
+let investmentSetting=Number(document.getElementById("investment").value)
+
+let investmentReturn=Number(document.getElementById("investmentReturn").value)/100
+
+let emergencyTarget=Number(document.getElementById("emergencyTarget").value)
+
+let loanAmount=Number(document.getElementById("loanAmount").value)
+
+let interestRate=Number(document.getElementById("interestRate").value)/100
+
+let repaymentType=document.getElementById("repaymentType").value
+
+let recalcOption=document.getElementById("recalcOption").value
+
+
+
+let bonusMonths=[]
+
+if(bonusTimes>0){
+
+let interval=Math.floor(12/bonusTimes)
+
+for(let i=1;i<=bonusTimes;i++){
+
+bonusMonths.push(i*interval)
+
+}
+
+}
+
+
+
+let interestChanges=[]
+
+document.querySelectorAll(".rateChangeRow").forEach(row=>{
+
+let year=Number(row.querySelector(".rateYear").value)
+
+let rate=Number(row.querySelector(".rateValue").value)/100
+
+interestChanges.push({year,rate})
+
+})
+
+
+
+let prepayList=[]
+
+document.querySelectorAll(".prepayRow").forEach(row=>{
+
+let year=Number(row.querySelector(".prepayYear").value)
+
+let amount=Number(row.querySelector(".prepayAmount").value)
+
+prepayList.push({year,amount})
+
+})
+
+
+
+let cash=savings
+
+let invested=0
+
+let investedPrincipal=0
+
+
+
+let loanYears=35
+
+let remainingLoan=loanAmount
+
+let currentAnnualRate=interestRate
+
+
+
+let pastYears=Math.max(0,startAge-loanStartAge)
+
+
+
+for(let year=1;year<=pastYears;year++){
+
+let change=interestChanges.find(c=>c.year===year)
+
+if(change)currentAnnualRate=change.rate
+
+
+
+let monthlyRate=currentAnnualRate/12
+
+let remainingMonths=(loanYears-year+1)*12
+
+
+
+let monthlyPayment=calculateMonthly(
+
+remainingLoan,
+monthlyRate,
+remainingMonths,
+repaymentType
+)
+
+
+
+for(let month=1;month<=12;month++){
+
+let interest=remainingLoan*monthlyRate
+
+let principal=monthlyPayment-interest
+
+principal=Math.min(principal,remainingLoan)
+
+remainingLoan-=principal
+
+}
+
+}
+let history=[]
+
+for(let year=pastYears+1;year<=loanYears;year++){
+
+let change=interestChanges.find(c=>c.year===year)
+
+if(change)currentAnnualRate=change.rate
+
+let monthlyRate=currentAnnualRate/12
+
+let remainingMonths=(loanYears-year+1)*12
+
+let monthlyPayment=calculateMonthly(
+remainingLoan,
+monthlyRate,
+remainingMonths,
+repaymentType
+)
+
+
+
+let yearlyPrincipal=0
+let yearlyInterest=0
+
+
+
+for(let month=1;month<=12;month++){
+
+cash+=income
+
+if(bonusMonths.includes(month)){
+cash+=bonusAmount
+}
+
+cash-=expenses
+
+
+
+let interest=remainingLoan*monthlyRate
+
+let principal=monthlyPayment-interest
+
+principal=Math.min(principal,remainingLoan)
+
+remainingLoan-=principal
+
+yearlyPrincipal+=principal
+
+yearlyInterest+=interest
+
+cash-=monthlyPayment
+
+
+
+let available=cash-emergencyTarget
+
+if(available>0){
+
+let investAmount=Math.min(investmentSetting,available)
+
+cash-=investAmount
+
+invested+=investAmount
+
+investedPrincipal+=investAmount
+
+}
+
+invested*=(1+investmentReturn/12)
+
+}
+
+
+
+prepayList.forEach(p=>{
+
+if(year===pastYears+p.year){
+
+let available=cash-emergencyTarget
+
+let repay=Math.min(p.amount,remainingLoan,available)
+
+remainingLoan-=repay
+
+cash-=repay
+}
+
+})
+
+
+
+let totalAsset=cash+invested
+
+let prevTotalAsset=history.length>0
+?history[history.length-1].totalAsset
+:null
+
+let diff=prevTotalAsset!==null
+?totalAsset-prevTotalAsset
+:null
+
+
+
+history.push({
+
+age:startAge+(year-pastYears-1),
+cash,
+invested,
+investedPrincipal,
+remainingLoan,
+annualRate:currentAnnualRate,
+totalAsset,
+diff,
+yearlyPrincipal,
+yearlyInterest
+
+})
+
+}
+
+
+
+let tableHTML='<table>'
+tableHTML+='<tr>'
+tableHTML+='<th>年齢</th>'
+tableHTML+='<th>現金</th>'
+tableHTML+='<th>投資</th>'
+tableHTML+='<th>残債</th>'
+tableHTML+='<th>金利</th>'
+tableHTML+='<th>純資産</th>'
+tableHTML+='<th>前年比</th>'
+tableHTML+='</tr>'
+
+
+
+for(let i=0;i<Math.min(maxYearDisplay,history.length);i++){
+
+let h=history[i]
+
+let netAsset=Math.round(h.cash+h.invested-h.remainingLoan)
+
+let diffStr=h.diff!==null
+?(h.diff>=0? "+"+Math.round(h.diff):Math.round(h.diff))
+:"-"
+
+
+
+tableHTML+='<tr>'
+
+tableHTML+=`<td>${h.age}</td>`
+tableHTML+=`<td>${Math.round(h.cash)}</td>`
+tableHTML+=`<td>${Math.round(h.invested)}</td>`
+tableHTML+=`<td>${Math.round(h.remainingLoan)}</td>`
+tableHTML+=`<td>${(h.annualRate*100).toFixed(2)}</td>`
+tableHTML+=`<td>${netAsset}</td>`
+tableHTML+=`<td>${diffStr}</td>`
+
+tableHTML+='</tr>'
+
+}
+
+
+
+tableHTML+='</table>'
+
+tableContainer.innerHTML=tableHTML
+
+
+
+let plusYear=history.find(
+h=>Math.round(h.cash+h.invested-h.remainingLoan)>=0
+)
+
+
+
+let bottom=history.reduce((min,h)=>{
+return (h.totalAsset<min.totalAsset)?h:min
+})
+
+
+
+let collapse=history.find(h=>h.cash<0)
+
+
+
+let annualExpense=expenses*12
+
+let fireTarget=Math.round(annualExpense/0.04)
+
+
+
+let text=""
+
+
+
+if(plusYear){
+
+text+="純資産プラスまで "
+text+=(plusYear.age-startAge)+"年<br>"
+
+}else{
+
+text+="純資産プラス 未到達<br>"
+
+}
+
+
+
+text+="資産ボトム "+bottom.age+"歳<br>"
+
+
+if(collapse){
+
+text+="資金ショート "+collapse.age+"歳<br>"
+
+}else{
+
+text+="資金ショート なし<br>"
+
+}
+
+
+
+text+="FIRE目安 "+fireTarget+"万円"
+
+
+
+commentSection.innerHTML=text
+
+
+
+result.innerHTML="診断完了"
+
+
+
+const labels=history
+.slice(0,maxYearDisplay)
+.map(h=>h.age)
+
+const cashData=history
+.slice(0,maxYearDisplay)
+.map(h=>Math.round(h.cash))
+
+const investedData=history
+.slice(0,maxYearDisplay)
+.map(h=>Math.round(h.invested))
+
+const loanData=history
+.slice(0,maxYearDisplay)
+.map(h=>Math.round(h.remainingLoan))
+
+const netData=history
+.slice(0,maxYearDisplay)
+.map(h=>Math.round(h.cash+h.invested-h.remainingLoan))
+
+
+
+if(assetChart)assetChart.destroy()
+
+
+
+assetChart=new Chart(ctx,{
+
+type:'line',
+
+data:{
+labels:labels,
+datasets:[
+{
+label:'現金',
+data:cashData,
+borderColor:'blue',
+fill:false
+},
+{
+label:'投資',
+data:investedData,
+borderColor:'green',
+fill:false
+},
+{
+label:'残債',
+data:loanData,
+borderColor:'red',
+fill:false
+},
+{
+label:'純資産',
+data:netData,
+borderColor:'orange',
+fill:false
+}
+]
+},
+
+options:{
+responsive:true,
+plugins:{legend:{position:'top'}},
+scales:{y:{beginAtZero:true}}
+}
+
+})
+
+}
+
+</script>
+
+</body>
+</html>
