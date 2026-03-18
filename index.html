@@ -622,6 +622,7 @@ tableHTML+='<th>残債</th>'
 tableHTML+='<th>金利</th>'
 tableHTML+='<th>純資産</th>'
 tableHTML+='<th>前年比</th>'
+tableHTML+='<th>詳細</th>' 
 tableHTML+='</tr>'
 
 
@@ -641,6 +642,7 @@ let diffStr=h.diff!==null
 tableHTML+='<tr>'
 
 tableHTML+=`<td>${h.age}</td>`
+tableHTML+=`<td class="clickable" onclick="toggleDetail('detail${i}')">▼</td>`
 tableHTML+=`<td>${Math.round(h.cash)}</td>`
 tableHTML+=`<td>${Math.round(h.invested)}</td>`
 tableHTML+=`<td>${Math.round(h.remainingLoan)}</td>`
@@ -649,6 +651,21 @@ tableHTML+=`<td>${netAsset}</td>`
 tableHTML+=`<td>${diffStr}</td>`
 
 tableHTML+='</tr>'
+tableHTML+=`
+<tr id="detail${i}" class="detailRow">
+<td colspan="8">
+
+【投資】<br>
+元本：${Math.round(h.investedPrincipal)} 万円<br>
+運用益：${Math.round(h.invested - h.investedPrincipal)} 万円<br><br>
+
+【ローン】<br>
+年間元本：${Math.round(h.yearlyPrincipal)} 万円<br>
+年間利息：${Math.round(h.yearlyInterest)} 万円
+
+</td>
+</tr>
+`
 
 }
 
