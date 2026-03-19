@@ -748,11 +748,11 @@ let last = history[history.length-1]
 let net = Math.round(last.cash + last.invested - last.remainingLoan)
 
 let summaryHTML = `
-<h2 style="font-size:28px;">
+<h2 style="font-size:32px; font-weight:bold; color:${net >= 0 ? "#16a34a" : "#dc2626"};">
 ${last.age}歳の資産：${net >= 0 ? "+" : ""}${net} 万円
 </h2>
 
-<div style="font-size:14px; margin-top:5px; color:#666;">
+<div style="font-size:13px; margin-top:6px; color:#888;">
 （ローン完済時点）
 </div>
 
