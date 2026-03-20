@@ -763,13 +763,44 @@ ${last.age}歳の資産：${net >= 0 ? "+" : ""}${net} 万円
 （ローン完済時点）
 </div>
 
-<div style="display:flex; justify-content:space-around; margin-top:15px;">
-<div style="font-size:14px;">
+<div style="display:flex; gap:10px; margin-top:15px;">
+
+<div style="
+flex:1;
+background:#ffffff;
+padding:12px;
+border-radius:12px;
+box-shadow:0 2px 6px rgba(0,0,0,0.08);
+text-align:center;
+">
 現金<br>
 <b style="font-size:18px;">${Math.round(last.cash)}</b>
 </div>
-<div>投資<br><b>${Math.round(last.invested)}</b></div>
-<div>残債<br><b>${Math.round(last.remainingLoan)}</b></div>
+
+<div style="
+flex:1;
+background:#ffffff;
+padding:12px;
+border-radius:12px;
+box-shadow:0 2px 6px rgba(0,0,0,0.08);
+text-align:center;
+">
+投資<br>
+<b style="font-size:18px;">${Math.round(last.invested)}</b>
+</div>
+
+<div style="
+flex:1;
+background:#ffffff;
+padding:12px;
+border-radius:12px;
+box-shadow:0 2px 6px rgba(0,0,0,0.08);
+text-align:center;
+">
+残債<br>
+<b style="font-size:18px;">${Math.round(last.remainingLoan)}</b>
+</div>
+
 </div>
 `
 
