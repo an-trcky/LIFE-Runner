@@ -207,7 +207,13 @@ cursor:pointer;
 
 <div id="result"></div>
 
-<div id="summaryCard" class="card" style="text-align:center;"></div>
+<div id="summaryCard" class="card" style="
+text-align:center;
+padding:20px;
+border-radius:16px;
+background:linear-gradient(135deg,#ffffff,#f1f5ff);
+box-shadow:0 8px 20px rgba(0,0,0,0.1);
+"></div>
 
 <div id="tableContainer"></div>
 
@@ -757,7 +763,10 @@ ${last.age}歳の資産：${net >= 0 ? "+" : ""}${net} 万円
 </div>
 
 <div style="display:flex; justify-content:space-around; margin-top:15px;">
-<div>現金<br><b>${Math.round(last.cash)}</b></div>
+<div style="font-size:14px;">
+現金<br>
+<b style="font-size:18px;">${Math.round(last.cash)}</b>
+</div>
 <div>投資<br><b>${Math.round(last.invested)}</b></div>
 <div>残債<br><b>${Math.round(last.remainingLoan)}</b></div>
 </div>
