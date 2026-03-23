@@ -184,7 +184,11 @@ cursor:pointer;
 
 <div class="card">
 
-<h3>住宅ローン</h3>
+<h3 onclick="toggleLoan()" style="cursor:pointer;">
+住宅ローン ▼
+</h3>
+
+<div id="loanContent">
 
 借入額（万円）
 <input type="number" id="loanAmount" value="3200">
@@ -205,7 +209,8 @@ cursor:pointer;
 </select>
 
 返済期間（年）
-<input type="number" id="loanYears" value="35">  
+<input type="number" id="loanYears" value="35">
+
 </div>
 
 
