@@ -204,6 +204,8 @@ cursor:pointer;
 <option value="reduce">月額減額</option>
 </select>
 
+返済期間（年）
+<input type="number" id="loanYears" value="35">  
 </div>
 
 
@@ -421,6 +423,8 @@ let loanAmount=Number(document.getElementById("loanAmount").value)
 
 let interestRate=Number(document.getElementById("interestRate").value)/100
 
+let loanYears=Number(document.getElementById("loanYears").value)
+  
 let repaymentType=document.getElementById("repaymentType").value
 
 let recalcOption=document.getElementById("recalcOption").value
@@ -478,8 +482,6 @@ let invested=0
 let investedPrincipal=0
 
 
-
-let loanYears=35
 
 let remainingLoan=loanAmount
 
