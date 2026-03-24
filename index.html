@@ -616,7 +616,18 @@ for(let month=1;month<=12;month++){
 cash+=income
 
 if(bonusMonths.includes(month)){
-cash+=bonusAmount
+cash += bonusAmount
+
+let repay = Number(document.getElementById("bonusRepay").value)
+
+let available = cash - emergencyTarget
+
+if(repay > 0 && available > 0){
+let pay = Math.min(repay, remainingLoan, available)
+
+remainingLoan -= pay
+cash -= pay
+}
 }
 
 cash-=expenses
