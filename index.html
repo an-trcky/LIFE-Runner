@@ -524,7 +524,7 @@ let year=Number(row.querySelector(".prepayYear").value)
 
 let amount=Number(row.querySelector(".prepayAmount").value)
 
-prepayList.push({year,amount})
+prepayList.push({age: year, amount})
 
 })
 
@@ -550,6 +550,8 @@ let pastYears=Math.max(0,startAge-loanStartAge)
 
 for(let year=1;year<=pastYears;year++){
 
+let startAge = Number(document.getElementById("startAge").value)
+let currentAge = startAge + (year - pastYears - 1)
 let change=interestChanges.find(c=>c.year===year)
 
 if(change)currentAnnualRate=change.rate
@@ -672,7 +674,7 @@ invested*=(1+investmentReturn/12)
 
 prepayList.forEach(p=>{
 
-if(year===pastYears+p.year){
+if(currentAge === p.age){
 
 let available=cash-emergencyTarget
 
