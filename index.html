@@ -505,11 +505,11 @@ let interestChanges=[]
 
 document.querySelectorAll(".rateChangeRow").forEach(row=>{
 
-let year=Number(row.querySelector(".rateYear").value)
+let year=Number(row.querySelector(".rateAge").value)
 
 let rate=Number(row.querySelector(".rateValue").value)/100
 
-interestChanges.push({year,rate})
+interestChanges.push({age,rate})
 
 })
 
