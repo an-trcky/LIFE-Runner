@@ -505,7 +505,7 @@ let interestChanges=[]
 
 document.querySelectorAll(".rateChangeRow").forEach(row=>{
 
-let year=Number(row.querySelector(".rateAge").value)
+let age=Number(row.querySelector(".rateAge").value)
 
 let rate=Number(row.querySelector(".rateValue").value)/100
 
@@ -548,7 +548,7 @@ for(let year=1;year<=pastYears;year++){
 
 let startAge = Number(document.getElementById("startAge").value)
 let currentAge = startAge + (year - pastYears - 1)
-let change=interestChanges.find(c=>c.year===year)
+let change = interestChanges.find(c => c.age === currentAge)
 
 if(change)currentAnnualRate=change.rate
 
@@ -590,7 +590,7 @@ for(let year=pastYears+1;year<=loanYears;year++){
 let startAge = Number(document.getElementById("startAge").value)
 let currentAge = startAge + (year - pastYears - 1)
   
-let change=interestChanges.find(c=>c.year===year)
+let change = interestChanges.find(c => c.age === currentAge)
 
 if(change)currentAnnualRate=change.rate
 
