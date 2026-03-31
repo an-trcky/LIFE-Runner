@@ -588,6 +588,9 @@ let history=[]
 
 for(let year=pastYears+1;year<=loanYears;year++){
 
+let startAge = Number(document.getElementById("startAge").value)
+let currentAge = startAge + (year - pastYears - 1)
+  
 let change=interestChanges.find(c=>c.year===year)
 
 if(change)currentAnnualRate=change.rate
