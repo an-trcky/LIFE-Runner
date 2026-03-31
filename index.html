@@ -516,16 +516,13 @@ interestChanges.push({year,rate})
 
 
 
-let prepayList=[]
+let prepayList = []
 
 document.querySelectorAll(".prepayRow").forEach(row=>{
+  let age = Number(row.querySelector(".prepayAge").value)
+  let amount = Number(row.querySelector(".prepayAmount").value)
 
-let year=Number(row.querySelector(".prepayYear").value)
-
-let amount=Number(row.querySelector(".prepayAmount").value)
-
-prepayList.push({age: year, amount})
-
+  prepayList.push({age, amount})
 })
 
 
