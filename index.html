@@ -503,6 +503,30 @@ bonusMonths.push(i*interval)
 }
 
 }
+  
+window.latestResult = {
+  net: net,
+  age: last.age
+}
+  
+function renderSavedHistory(){
+
+  let history = JSON.parse(localStorage.getItem("lifeRunnerSaved")) || []
+
+  let html = ""
+
+  history.forEach(h => {
+
+    html += `
+      <div style="margin-bottom:10px;">
+        ・${h.title}<br>
+        → ${h.age}歳：最終資産 ${h.net >= 0 ? "+" : ""}${h.net}万
+      </div>
+    `
+  })
+
+  document.getElementById("savedList").innerHTML = html
+}
 
 const saveBtn = document.getElementById("saveBtn")
 
@@ -532,6 +556,8 @@ saveBtn.addEventListener("click", () => {
   renderSavedHistory()
 })
 
+renderSavedHistory()
+  
 let interestChanges=[]
 
 document.querySelectorAll(".rateChangeRow").forEach(row=>{
