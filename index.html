@@ -355,6 +355,25 @@ philosophySection.style.display="none"
 runBtn.addEventListener("click",()=>{
 
 maxYearDisplay=10
+
+function renderSavedHistory(){
+
+  let history = JSON.parse(localStorage.getItem("lifeRunnerSaved")) || []
+
+  let html = ""
+
+  history.forEach(h => {
+
+    html += `
+      <div style="margin-bottom:10px;">
+        ・${h.title}<br>
+        → ${h.age}歳：最終資産 ${h.net >= 0 ? "+" : ""}${h.net}万
+      </div>
+    `
+  })
+
+  document.getElementById("savedList").innerHTML = html
+}
 calculateAndRender()
 
 })
@@ -502,25 +521,6 @@ bonusMonths.push(i*interval)
 
 }
 
-}
-  
-function renderSavedHistory(){
-
-  let history = JSON.parse(localStorage.getItem("lifeRunnerSaved")) || []
-
-  let html = ""
-
-  history.forEach(h => {
-
-    html += `
-      <div style="margin-bottom:10px;">
-        ・${h.title}<br>
-        → ${h.age}歳：最終資産 ${h.net >= 0 ? "+" : ""}${h.net}万
-      </div>
-    `
-  })
-
-  document.getElementById("savedList").innerHTML = html
 }
 
 const saveBtn = document.getElementById("saveBtn")
