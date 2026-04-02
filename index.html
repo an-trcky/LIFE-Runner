@@ -504,11 +504,6 @@ bonusMonths.push(i*interval)
 
 }
   
-window.latestResult = {
-  net: net,
-  age: last.age
-}
-  
 function renderSavedHistory(){
 
   let history = JSON.parse(localStorage.getItem("lifeRunnerSaved")) || []
@@ -908,6 +903,11 @@ let last = history[history.length-1]
 
 let net = Math.round(last.cash + last.invested - last.remainingLoan)
 
+window.latestResult = {
+  net: net,
+  age: last.age
+}
+  
 let summaryHTML = `
 <h2 style="
 font-size:34px;
