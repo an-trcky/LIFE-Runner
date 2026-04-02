@@ -338,24 +338,6 @@ let assetChart=null
 
 let maxYearDisplay=10
 
-
-
-philoBtn.addEventListener("click",()=>{
-
-if(philosophySection.style.display==="none"){
-philosophySection.style.display="block"
-}else{
-philosophySection.style.display="none"
-}
-
-})
-
-
-
-runBtn.addEventListener("click",()=>{
-
-maxYearDisplay=10
-
 function renderSavedHistory(){
 
   let history = JSON.parse(localStorage.getItem("lifeRunnerSaved")) || []
@@ -374,6 +356,23 @@ function renderSavedHistory(){
 
   document.getElementById("savedList").innerHTML = html
 }
+
+philoBtn.addEventListener("click",()=>{
+
+if(philosophySection.style.display==="none"){
+philosophySection.style.display="block"
+}else{
+philosophySection.style.display="none"
+}
+
+})
+
+
+
+runBtn.addEventListener("click",()=>{
+
+maxYearDisplay=10
+
 calculateAndRender()
 
 })
