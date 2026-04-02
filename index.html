@@ -504,7 +504,33 @@ bonusMonths.push(i*interval)
 
 }
 
+const saveBtn = document.getElementById("saveBtn")
 
+saveBtn.addEventListener("click", () => {
+
+  if(!window.latestResult){
+    alert("先にシミュレーションしてください")
+    return
+  }
+
+  let title = prompt("タイトルを入力（任意）")
+
+  if(!title || title.trim() === ""){
+    title = "無題（" + new Date().toLocaleDateString() + "）"
+  }
+
+  let history = JSON.parse(localStorage.getItem("lifeRunnerSaved")) || []
+
+  history.unshift({
+    title: title,
+    net: window.latestResult.net,
+    age: window.latestResult.age
+  })
+
+  localStorage.setItem("lifeRunnerSaved", JSON.stringify(history))
+
+  renderSavedHistory()
+})
 
 let interestChanges=[]
 
