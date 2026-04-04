@@ -344,14 +344,15 @@ function renderSavedHistory(){
 
   let html = ""
 
-  history.forEach(h => {
+  history.forEach((h, i) => {
 
-    html += `
-      <div style="margin-bottom:10px;">
-        ・${h.title}<br>
-        → ${h.age}歳：最終資産 ${h.net >= 0 ? "+" : ""}${h.net}万
-      </div>
-    `
+  html += `
+  <div style="margin-bottom:10px;">
+    ・${h.title}<br>
+    → ${h.age}歳：最終資産 ${h.net >= 0 ? "+" : ""}${h.net}万<br>
+    <button onclick="deleteHistory(${i})">削除</button>
+  </div>
+`
   })
 
   document.getElementById("savedList").innerHTML = html
@@ -1039,7 +1040,25 @@ scales:{y:{beginAtZero:true}}
 })
 
 }
+function deleteHistory(index){
+
+  if(!confirm("削除する？")) return
+
+  let history = JSON.parse(localStorage.getItem("lifeRunnerSaved")) || []
+
+  history.splice(index, 1)
+
+  localStorage.setItem("lifeRunnerSaved", JSON.stringify(history))
+
+  renderSavedHistory()
+}
+
 renderSavedHistory()
+
+</script>
+
+</body>
+</html>
 </script>
 
 </body>
