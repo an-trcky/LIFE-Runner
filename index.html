@@ -346,15 +346,19 @@ function renderSavedHistory(){
 
   history.forEach((h, i) => {
 
- html += `
-  <div style="margin-bottom:10px; padding:8px; border-radius:8px; background:#f9fafb; cursor:pointer;" onclick="loadHistory(${i})">
-    ・${h.title}<br>
-    → ${h.age}歳：最終資産 ${h.net >= 0 ? "+" : ""}${h.net}万
-    <div style="text-align:right; margin-top:5px;">
-      <button onclick="event.stopPropagation(); deleteHistory(${i})">削除</button>
-    </div>
-  </div>
-`
+    html += `
+      <div style="margin-bottom:10px; padding:8px; border-radius:8px; background:#f9fafb;">
+        
+        ・${h.title}<br>
+        → ${h.age}歳：最終資産 ${h.net >= 0 ? "+" : ""}${h.net}万
+
+        <div style="margin-top:5px;">
+          <button onclick="loadHistory(${i})">読込</button>
+          <button onclick="deleteHistory(${i})">削除</button>
+        </div>
+
+      </div>
+    `
   })
 
   document.getElementById("savedList").innerHTML = html
