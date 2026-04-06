@@ -1116,10 +1116,14 @@ function loadHistory(index){
   result.innerHTML = "読込中..."
 
 setTimeout(()=>{
-  calculateAndRender()
+  requestAnimationFrame(()=>{
 
-  result.innerHTML = "診断完了（" + data.title + " を読込）"
-}, 900)
+    calculateAndRender()
+
+    result.innerHTML = "診断完了（" + data.title + " を読込）"
+
+  })
+}, 50)
 }
 window.onload = function(){
   renderSavedHistory()
