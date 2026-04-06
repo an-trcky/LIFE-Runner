@@ -1133,6 +1133,69 @@ setTimeout(()=>{
 window.onload = function(){
   renderSavedHistory()
 }
+
+function addEvent(){
+
+  const container = document.getElementById("eventList")
+
+  const div = document.createElement("div")
+  div.className = "event"
+
+  div.innerHTML = `
+
+    <!-- 説明 -->
+    <div style="font-size:12px; color:gray; margin-bottom:8px;">
+      このイベントは「人生の変化」を入力します（収入・支出・一時的な出来事）
+    </div>
+
+    <!-- ① 年齢 -->
+    <div>
+      <label>何歳のとき？</label><br>
+      <input type="number" class="age" value="40">
+    </div>
+
+    <br>
+
+    <!-- ② 種類 -->
+    <div>
+      <label>イベントの種類</label><br>
+      <select class="type">
+        <option value="incomeAdd">収入増（昇進・副業）</option>
+        <option value="incomeSet">収入変更（転職）</option>
+        <option value="expenseAdd">支出増（子供・習い事）</option>
+        <option value="expenseSet">生活費変更（引っ越しなど）</option>
+        <option value="oneIncome">一時収入（ボーナス・贈与）</option>
+        <option value="oneExpense">一時支出（車・旅行・学費）</option>
+      </select>
+    </div>
+
+    <br>
+
+    <!-- ③ 金額 -->
+    <div>
+      <label>金額（万円）</label><br>
+      <input type="number" class="amount" value="10">
+    </div>
+
+    <br>
+
+    <!-- ④ メモ -->
+    <div>
+      <label>メモ</label><br>
+      <input type="text" class="note" placeholder="例：昇進した、子供が生まれた">
+    </div>
+
+    <br>
+
+    <!-- 削除 -->
+    <button onclick="this.parentElement.remove()">削除</button>
+
+    <hr>
+
+  `
+
+  container.appendChild(div)
+}
 </script>
 
 </body>
