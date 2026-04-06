@@ -1068,6 +1068,7 @@ function deleteHistory(index){
 
   localStorage.setItem("lifeRunnerSaved", JSON.stringify(history))
 
+  window.onload = function(){
   renderSavedHistory()
 }
 
