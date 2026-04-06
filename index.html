@@ -346,11 +346,13 @@ function renderSavedHistory(){
 
   history.forEach((h, i) => {
 
-  html += `
-  <div style="margin-bottom:10px;">
+ html += `
+  <div style="margin-bottom:10px; padding:8px; border-radius:8px; background:#f9fafb; cursor:pointer;" onclick="loadHistory(${i})">
     ・${h.title}<br>
-    → ${h.age}歳：最終資産 ${h.net >= 0 ? "+" : ""}${h.net}万<br>
-    <button onclick="deleteHistory(${i})">削除</button>
+    → ${h.age}歳：最終資産 ${h.net >= 0 ? "+" : ""}${h.net}万
+    <div style="text-align:right; margin-top:5px;">
+      <button onclick="event.stopPropagation(); deleteHistory(${i})">削除</button>
+    </div>
   </div>
 `
   })
@@ -1071,6 +1073,35 @@ function deleteHistory(index){
 
 renderSavedHistory()
 
+function loadHistory(index){
+
+  let history = JSON.parse(localStorage.getItem("lifeRunnerSaved")) || []
+
+  let data = history[index]
+
+  if(!data.inputs){
+    alert("古いデータは読み込めません")
+    return
+  }
+
+  let inputs = data.inputs
+
+  document.getElementById("startAge").value = inputs.startAge
+  document.getElementById("loanStartAge").value = inputs.loanStartAge
+  document.getElementById("income").value = inputs.income
+  document.getElementById("bonusTimes").value = inputs.bonusTimes
+  document.getElementById("bonusAmount").value = inputs.bonusAmount
+  document.getElementById("savings").value = inputs.savings
+  document.getElementById("expenses").value = inputs.expenses
+  document.getElementById("investment").value = inputs.investment
+  document.getElementById("investmentReturn").value = inputs.investmentReturn
+  document.getElementById("emergencyTarget").value = inputs.emergencyTarget
+  document.getElementById("loanAmount").value = inputs.loanAmount
+  document.getElementById("interestRate").value = inputs.interestRate
+  document.getElementById("loanYears").value = inputs.loanYears
+
+  calculateAndRender()
+}
 </script>
 
 </body>
