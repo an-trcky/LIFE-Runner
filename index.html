@@ -1068,13 +1068,8 @@ function deleteHistory(index){
 
   localStorage.setItem("lifeRunnerSaved", JSON.stringify(history))
 
-  window.onload = function(){
   renderSavedHistory()
 }
-
-renderSavedHistory()
-
-function loadHistory(index){
 
   let history = JSON.parse(localStorage.getItem("lifeRunnerSaved")) || []
 
