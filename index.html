@@ -1071,6 +1071,8 @@ function deleteHistory(index){
   renderSavedHistory()
 }
 
+function loadHistory(index){
+
   let history = JSON.parse(localStorage.getItem("lifeRunnerSaved")) || []
 
   let data = history[index]
