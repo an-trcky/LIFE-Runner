@@ -619,7 +619,17 @@ let repaymentType=document.getElementById("repaymentType").value
 
 let recalcOption=document.getElementById("recalcOption").value
 
+let events = []
 
+document.querySelectorAll(".event").forEach(e => {
+
+  let age = Number(e.querySelector(".age").value)
+  let type = e.querySelector(".type").value
+  let amount = Number(e.querySelector(".amount").value)
+  let note = e.querySelector(".note").value
+
+  events.push({ age, type, amount, note })
+})
 
 let bonusMonths=[]
 
