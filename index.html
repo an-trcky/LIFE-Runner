@@ -1112,6 +1112,14 @@ function loadHistory(index){
   document.getElementById("loanYears").value = inputs.loanYears
 
   calculateAndRender()
+
+  result.innerHTML = "読込中..."
+
+setTimeout(()=>{
+  calculateAndRender()
+
+  result.innerHTML = "診断完了（" + data.title + " を読込）"
+}, 300)
 }
 window.onload = function(){
   renderSavedHistory()
