@@ -1079,7 +1079,7 @@ function loadHistory(index){
 
   let data = history[index]
 
-  if(!data.inputs){
+  if(!data || !data.inputs){
     alert("古いデータは読み込めません")
     return
   }
