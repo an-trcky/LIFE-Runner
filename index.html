@@ -396,10 +396,26 @@ saveBtn.addEventListener("click", () => {
   let history = JSON.parse(localStorage.getItem("lifeRunnerSaved")) || []
 
   history.unshift({
-    title: title,
-    net: window.latestResult.net,
-    age: window.latestResult.age
-  })
+  title: title,
+  net: window.latestResult.net,
+  age: window.latestResult.age,
+
+  inputs: {
+    startAge: document.getElementById("startAge").value,
+    loanStartAge: document.getElementById("loanStartAge").value,
+    income: document.getElementById("income").value,
+    bonusTimes: document.getElementById("bonusTimes").value,
+    bonusAmount: document.getElementById("bonusAmount").value,
+    savings: document.getElementById("savings").value,
+    expenses: document.getElementById("expenses").value,
+    investment: document.getElementById("investment").value,
+    investmentReturn: document.getElementById("investmentReturn").value,
+    emergencyTarget: document.getElementById("emergencyTarget").value,
+    loanAmount: document.getElementById("loanAmount").value,
+    interestRate: document.getElementById("interestRate").value,
+    loanYears: document.getElementById("loanYears").value
+  }
+})
 
   localStorage.setItem("lifeRunnerSaved", JSON.stringify(history))
 
