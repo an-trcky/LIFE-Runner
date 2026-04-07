@@ -758,6 +758,16 @@ remainingLoan-=principal
 }
 let history=[]
 
+let baseIncome = income
+let baseExpenses = expenses
+
+for(let year=pastYears+1;year<=loanYears;year++){
+
+  let currentAge = startAge + (year - pastYears - 1)
+
+  let yearlyIncome = baseIncome
+  let yearlyExpenses = baseExpenses
+
 for(let year=pastYears+1;year<=loanYears;year++){
 
 let startAge = Number(document.getElementById("startAge").value)
@@ -778,7 +788,37 @@ remainingMonths,
 repaymentType
 )
 
+events.forEach(ev => {
 
+  if(ev.age === currentAge){
+
+    if(ev.type === "incomeAdd"){
+      yearlyIncome += ev.amount
+    }
+
+    if(ev.type === "incomeSet"){
+      yearlyIncome = ev.amount
+    }
+
+    if(ev.type === "expenseAdd"){
+      yearlyExpenses += ev.amount
+    }
+
+    if(ev.type === "expenseSet"){
+      yearlyExpenses = ev.amount
+    }
+
+    if(ev.type === "oneIncome"){
+      cash += ev.amount
+    }
+
+    if(ev.type === "oneExpense"){
+      cash -= ev.amount
+    }
+
+  }
+
+})
 
 let yearlyPrincipal=0
 let yearlyInterest=0
@@ -787,7 +827,7 @@ let yearlyInterest=0
 
 for(let month=1;month<=12;month++){
 
-cash+=income
+cash+=yearlyIncome
 
 if(bonusMonths.includes(month)){
 cash += bonusAmount
@@ -804,7 +844,7 @@ cash -= pay
 }
 }
 
-cash-=expenses
+cash-=yearlyExpenses
 
 
 
