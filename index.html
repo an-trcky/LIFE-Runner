@@ -758,35 +758,35 @@ remainingLoan-=principal
 }
 let history=[]
 
-let baseIncome = income
-let baseExpenses = expenses
+// ★永続ステータス
+let currentIncome = income
+let currentExpenses = expenses
 
 for(let year=pastYears+1;year<=loanYears;year++){
 
   let currentAge = startAge + (year - pastYears - 1)
 
-  let yearlyIncome = baseIncome
-  let yearlyExpenses = baseExpenses
-
-  // ★イベント適用
+  // =========================
+  // ★イベント適用（最初にやる）
+  // =========================
   events.forEach(ev => {
 
     if(ev.age === currentAge){
 
       if(ev.type === "incomeAdd"){
-        yearlyIncome += ev.amount
+        currentIncome += ev.amount
       }
 
       if(ev.type === "incomeSet"){
-        yearlyIncome = ev.amount
+        currentIncome = ev.amount
       }
 
       if(ev.type === "expenseAdd"){
-        yearlyExpenses += ev.amount
+        currentExpenses += ev.amount
       }
 
       if(ev.type === "expenseSet"){
-        yearlyExpenses = ev.amount
+        currentExpenses = ev.amount
       }
 
       if(ev.type === "oneIncome"){
@@ -801,6 +801,13 @@ for(let year=pastYears+1;year<=loanYears;year++){
 
   })
 
+  // ★その年の確定値
+  let yearlyIncome = currentIncome
+  let yearlyExpenses = currentExpenses
+
+  // =========================
+  // 金利変更
+  // =========================
   let change = interestChanges.find(c => c.age === currentAge)
   if(change) currentAnnualRate = change.rate
 
@@ -817,10 +824,15 @@ for(let year=pastYears+1;year<=loanYears;year++){
   let yearlyPrincipal = 0
   let yearlyInterest = 0
 
+  // =========================
+  // 月ループ
+  // =========================
   for(let month=1;month<=12;month++){
 
+    // 収入
     cash += yearlyIncome
 
+    // ボーナス
     if(bonusMonths.includes(month)){
       cash += bonusAmount
 
@@ -834,8 +846,10 @@ for(let year=pastYears+1;year<=loanYears;year++){
       }
     }
 
+    // 支出
     cash -= yearlyExpenses
 
+    // ローン
     let interest = remainingLoan * monthlyRate
     let principal = monthlyPayment - interest
 
@@ -847,6 +861,7 @@ for(let year=pastYears+1;year<=loanYears;year++){
 
     cash -= monthlyPayment
 
+    // 投資
     let available = cash - emergencyTarget
 
     if(available > 0){
@@ -859,6 +874,9 @@ for(let year=pastYears+1;year<=loanYears;year++){
     invested *= (1 + investmentReturn / 12)
   }
 
+  // =========================
+  // 繰上げ返済
+  // =========================
   prepayList.forEach(p=>{
     if(currentAge === p.age){
       let available = cash - emergencyTarget
@@ -868,6 +886,9 @@ for(let year=pastYears+1;year<=loanYears;year++){
     }
   })
 
+  // =========================
+  // 記録
+  // =========================
   let totalAsset = cash + invested
 
   let prevTotalAsset = history.length>0
