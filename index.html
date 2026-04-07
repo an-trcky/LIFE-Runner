@@ -696,6 +696,32 @@ for(let year=1;year<=pastYears;year++){
 
 let startAge = Number(document.getElementById("startAge").value)
 let currentAge = startAge + (year - pastYears - 1)
+
+// ★イベント適用
+events.forEach(ev => {
+
+  if(ev.age === currentAge){
+
+    if(ev.type === "incomeAdd"){
+      income += ev.amount
+    }
+
+    if(ev.type === "expenseAdd"){
+      expenses += ev.amount
+    }
+
+    if(ev.type === "oneIncome"){
+      cash += ev.amount
+    }
+
+    if(ev.type === "oneExpense"){
+      cash -= ev.amount
+    }
+
+  }
+
+})
+  
 let change = interestChanges.find(c => c.age === currentAge)
 
 if(change)currentAnnualRate=change.rate
