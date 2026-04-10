@@ -696,7 +696,7 @@ for(let year=1;year<=pastYears;year++){
 
 let startAge = Number(document.getElementById("startAge").value)
 let currentAge = startAge + (year - pastYears - 1)
-
+let appliedEvents = []
 events.forEach(ev => {
 
   if(ev.age === currentAge){
