@@ -702,24 +702,40 @@ events.forEach(ev => {
   if(ev.age === currentAge){
 
     if(ev.type === "incomeAdd"){
-      income += ev.amount
+      yearlyIncome += ev.amount
+      appliedEvents.push(`収入＋${ev.amount}`)
+    }
+
+    if(ev.type === "incomeSet"){
+      yearlyIncome = ev.amount
+      appliedEvents.push(`収入→${ev.amount}`)
     }
 
     if(ev.type === "expenseAdd"){
-      expenses += ev.amount
+      yearlyExpenses += ev.amount
+      appliedEvents.push(`支出＋${ev.amount}`)
+    }
+
+    if(ev.type === "expenseSet"){
+      yearlyExpenses = ev.amount
+      appliedEvents.push(`支出→${ev.amount}`)
     }
 
     if(ev.type === "oneIncome"){
       cash += ev.amount
+      appliedEvents.push(`臨時収入＋${ev.amount}`)
     }
 
     if(ev.type === "oneExpense"){
       cash -= ev.amount
+      appliedEvents.push(`臨時支出−${ev.amount}`)
     }
 
   }
 
 })
+
+  
   
 let change = interestChanges.find(c => c.age === currentAge)
 
