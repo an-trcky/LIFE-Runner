@@ -1188,6 +1188,13 @@ label:'純資産',
 data:netData,
 borderColor:'orange',
 fill:false
+},
+{
+  label:'イベント',
+  data: history.map((h,i)=> h.events.length ? netData[i] : null),
+  pointRadius:6,
+  pointBackgroundColor:'purple',
+  showLine:false
 }
 ]
 },
