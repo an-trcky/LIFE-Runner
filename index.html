@@ -693,10 +693,8 @@ let pastYears=Math.max(0,startAge-loanStartAge)
 
 
 for(let year=1;year<=pastYears;year++){
-
-let startAge = Number(document.getElementById("startAge").value)
-let currentAge = startAge + (year - pastYears - 1)
 let appliedEvents = []
+let currentAge = startAge + (year - pastYears - 1)
 events.forEach(ev => {
 
   if(ev.age === currentAge){
@@ -923,7 +921,7 @@ for(let year=pastYears+1;year<=loanYears;year++){
     totalAsset,
     diff,
     yearlyPrincipal,
-    yearlyInterest
+    yearlyInterest,
     events: appliedEvents
   })
 }
