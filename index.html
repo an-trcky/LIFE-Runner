@@ -972,6 +972,8 @@ tableHTML+=`
 <tr id="detail${i}" class="detailRow">
 <td colspan="8">
 
+【イベント】<br>
+${h.events.length ? h.events.join("<br>") : "なし"}<br><br>
 【投資】<br>
 元本：${Math.round(h.investedPrincipal)} 万円<br>
 運用益：${Math.round(h.invested - h.investedPrincipal)} 万円<br><br>
