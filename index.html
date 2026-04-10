@@ -699,37 +699,37 @@ events.forEach(ev => {
 
   if(ev.age === currentAge){
 
-  if(ev.type === "incomeAdd"){
-    currentIncome += ev.amount
-    appliedEvents.push(`収入＋${ev.amount}`)
-  }
+    if(ev.type === "incomeAdd"){
+      currentIncome += ev.amount
+      appliedEvents.push(`収入＋${ev.amount}`)
+    }
 
-  if(ev.type === "incomeSet"){
-    currentIncome = ev.amount
-    appliedEvents.push(`収入→${ev.amount}`)
-  }
+    if(ev.type === "incomeSet"){
+      currentIncome = ev.amount
+      appliedEvents.push(`収入→${ev.amount}`)
+    }
 
-  if(ev.type === "expenseAdd"){
-    currentExpenses += ev.amount
-    appliedEvents.push(`支出＋${ev.amount}`)
-  }
+    if(ev.type === "expenseAdd"){
+      currentExpenses += ev.amount
+      appliedEvents.push(`支出＋${ev.amount}`)
+    }
 
-  if(ev.type === "expenseSet"){
-    currentExpenses = ev.amount
-    appliedEvents.push(`支出→${ev.amount}`)
-  }
+    if(ev.type === "expenseSet"){
+      currentExpenses = ev.amount
+      appliedEvents.push(`支出→${ev.amount}`)
+    }
 
-  if(ev.type === "oneIncome"){
-    cash += ev.amount
-    appliedEvents.push(`臨時収入＋${ev.amount}`)
-  }
+    if(ev.type === "oneIncome"){
+      cash += ev.amount
+      appliedEvents.push(`臨時収入＋${ev.amount}`)
+    }
 
-  if(ev.type === "oneExpense"){
-    cash -= ev.amount
-    appliedEvents.push(`臨時支出−${ev.amount}`)
-  }
+    if(ev.type === "oneExpense"){
+      cash -= ev.amount
+      appliedEvents.push(`臨時支出−${ev.amount}`)
+    }
 
-}
+  }
 
 })
 
