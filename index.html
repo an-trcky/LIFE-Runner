@@ -700,7 +700,7 @@ let appliedEvents = []
 events.forEach(ev => {
 
   if(ev.age === currentAge){
-　　　appliedEvents.push(ev
+　　　appliedEvents.push(ev)
     if(ev.type === "incomeAdd"){
       yearlyIncome += ev.amount
       appliedEvents.push(`収入＋${ev.amount}`)
@@ -924,6 +924,7 @@ for(let year=pastYears+1;year<=loanYears;year++){
     diff,
     yearlyPrincipal,
     yearlyInterest
+    events: appliedEvents
   })
 }
 
