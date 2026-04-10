@@ -766,9 +766,7 @@ for(let year=pastYears+1;year<=loanYears;year++){
 
   let currentAge = startAge + (year - pastYears - 1)
 
-  // =========================
-  // ★イベント適用（最初にやる）
-  // =========================
+  // ★イベント適用（累積）
   events.forEach(ev => {
 
     if(ev.age === currentAge){
