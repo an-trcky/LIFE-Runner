@@ -680,71 +680,23 @@ let invested=0
 
 let investedPrincipal=0
 
-
-
 let remainingLoan=loanAmount
 
 let currentAnnualRate=interestRate
 
-
-
 let pastYears=Math.max(0,startAge-loanStartAge)
-
-
 
 for(let year=1;year<=pastYears;year++){
 let appliedEvents = []
 let currentAge = startAge + (year - pastYears - 1)
-events.forEach(ev => {
 
-  if(ev.age === currentAge){
-if(ev.type === "incomeAdd"){
-  currentIncome += ev.amount
-  appliedEvents.push(`収入＋${ev.amount}`)
-}
-
-if(ev.type === "incomeSet"){
-  currentIncome = ev.amount
-  appliedEvents.push(`収入→${ev.amount}`)
-}
-
-if(ev.type === "expenseAdd"){
-  currentExpenses += ev.amount
-  appliedEvents.push(`支出＋${ev.amount}`)
-}
-
-if(ev.type === "expenseSet"){
-  currentExpenses = ev.amount
-  appliedEvents.push(`支出→${ev.amount}`)
-}
-
-if(ev.type === "oneIncome"){
-  cash += ev.amount
-  appliedEvents.push(`臨時収入＋${ev.amount}`)
-}
-
-if(ev.type === "oneExpense"){
-  cash -= ev.amount
-  appliedEvents.push(`臨時支出−${ev.amount}`)
-}
-
-  }
-
-})
-
-  
-  
 let change = interestChanges.find(c => c.age === currentAge)
 
 if(change)currentAnnualRate=change.rate
 
-
-
 let monthlyRate=currentAnnualRate/12
 
 let remainingMonths=(loanYears-year+1)*12
-
-
 
 let monthlyPayment=calculateMonthly(
 
