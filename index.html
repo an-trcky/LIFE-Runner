@@ -730,39 +730,48 @@ let currentExpenses = expenses
 for(let year=pastYears+1;year<=loanYears;year++){
 
   let currentAge = startAge + (year - pastYears - 1)
-  let appliedEvents = []
-  // ★イベント適用（累積）
-  events.forEach(ev => {
+  // ★イベント適用（累積＋表示）
+let appliedEvents = []
 
-    if(ev.age === currentAge){
+events.forEach(ev => {
 
-      if(ev.type === "incomeAdd"){
-        currentIncome += ev.amount
-      }
+  if(ev.age === currentAge){
 
-      if(ev.type === "incomeSet"){
-        currentIncome = ev.amount
-      }
+    const noteText = ev.note ? `（${ev.note}）` : ""
 
-      if(ev.type === "expenseAdd"){
-        currentExpenses += ev.amount
-      }
-
-      if(ev.type === "expenseSet"){
-        currentExpenses = ev.amount
-      }
-
-      if(ev.type === "oneIncome"){
-        cash += ev.amount
-      }
-
-      if(ev.type === "oneExpense"){
-        cash -= ev.amount
-      }
-
+    if(ev.type === "incomeAdd"){
+      currentIncome += ev.amount
+      appliedEvents.push(`収入＋${ev.amount}${noteText}`)
     }
 
-  })
+    if(ev.type === "incomeSet"){
+      currentIncome = ev.amount
+      appliedEvents.push(`収入→${ev.amount}${noteText}`)
+    }
+
+    if(ev.type === "expenseAdd"){
+      currentExpenses += ev.amount
+      appliedEvents.push(`支出＋${ev.amount}${noteText}`)
+    }
+
+    if(ev.type === "expenseSet"){
+      currentExpenses = ev.amount
+      appliedEvents.push(`支出→${ev.amount}${noteText}`)
+    }
+
+    if(ev.type === "oneIncome"){
+      cash += ev.amount
+      appliedEvents.push(`臨時収入＋${ev.amount}${noteText}`)
+    }
+
+    if(ev.type === "oneExpense"){
+      cash -= ev.amount
+      appliedEvents.push(`臨時支出−${ev.amount}${noteText}`)
+    }
+
+  }
+
+})
 
   // ★その年の確定値
   let yearlyIncome = currentIncome
