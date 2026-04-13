@@ -1151,7 +1151,10 @@ fill:false
   label:'イベント',
   data: history
     .slice(0, maxYearDisplay)
-    .map((h,i)=> h.events.length ? netData[i] : null),
+    .map(h => (h.events && h.events.length)
+      ? Math.round(h.cash + h.invested - h.remainingLoan)
+      : null
+    ),
   pointRadius:6,
   pointBackgroundColor:'purple',
   showLine:false
